@@ -1,1 +1,0 @@
-REPLACE INTO `sys_users` (`id`, `user_code`, `user_name`, `nick_name`, `app_name`, `pass_word`, `is_sys_admin`, `email`, `phone`, `avatar`, `tenant_code`, `payload`, `is_ext`, `ext_name`, `status`, `created_at`, `updated_at`, `deleted_at`) VALUES (1, '1', '2', 'd', 's', 'a', 0, NULL, NULL, NULL, NULL, NULL, 0, NULL, 0, NULL, NULL, NULL);
