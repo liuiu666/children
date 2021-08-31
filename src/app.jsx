@@ -16,23 +16,14 @@ let activePath = '';
 export function patchRoutes({ routes }) {
   if (isInIcestark()) {
     let component;
-    // let notFound;
-
     routes[0].routes.forEach((item) => {
       item.path = `/${productCode}${item.path}`;
-      // if (item.path === `/${productCode}/404`) {
-      //   notFound = item.component;
-      // }
       if (activePath && activePath === item.path) {
         component = item.component;
       }
     });
-    // routes[0].routes.push({
-    //   component: notFound,
-    // });
     try {
       const path = window.location.hash.split('#')[1]?.split('?')[0];
-
       if (activePath) {
         routes.unshift({
           path,
@@ -60,7 +51,7 @@ export function render(oldRender) {
     registerAppEnter((e) => {
       rootElement = e.customProps?.root || 'sub-root';
       activePath = e.customProps?.activePath || '';
-      store.set('axe-data', e.customProps);
+      store.set('sys-data', e.customProps);
       oldRender();
     });
     registerAppLeave(() => {
