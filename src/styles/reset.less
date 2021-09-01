@@ -1,0 +1,129 @@
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  padding: 0 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+legend,
+button form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td {
+  padding: 0;
+  margin: 0;
+}
+/* 酌情修改 */
+body {
+  background: #fff;
+  color: #333;
+  font-size: 12px;
+  margin-top: 5px;
+  font-family: 'SimSun', '宋体', 'Arial Narrow';
+  height: 100%;
+  width: 100%;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+/* 短引用的内容可取值：''或"" */
+q:before,
+q:after {
+  content: ”;
+}
+
+/* 缩写，图片等无边框 */
+fieldset,
+img,
+abbr,
+acronym {
+  border: 0 none;
+}
+abbr,
+acronym {
+  font-variant: normal;
+}
+
+/* 清除特殊标记的字体和字号 */
+address,
+caption,
+cite,
+code,
+dfn,
+em,
+strong,
+th,
+var {
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 上下标 */
+sup {
+  vertical-align: text-top;
+}
+sub {
+  vertical-align: text-bottom;
+}
+
+/* 设置表格的边框被合并为一个单一的边框, 指定分隔边框模型中单元格边界之间的距离为0*/
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 表格标题及内容居左显示 */
+caption,
+th {
+  text-align: left;
+}
+input,
+img,
+select {
+  vertical-align: middle;
+}
+
+/* 清除列表样式 */
+ol,
+ul {
+  list-style: none;
+}
+
+/* 输入控件字体 */
+input,
+button,
+textarea,
+select,
+optgroup,
+option {
+  font-family: inherit;
+  font-size: inherit;
+  font-style: inherit;
+  font-weight: inherit;
+}

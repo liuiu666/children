@@ -36,8 +36,8 @@ export default defineConfig({
     config.output.filename('app.js');
   },
   proxy: {
-    '/etAxeAdmin': {
-      target: 'http://127.0.0.1:6001',
+    '/api': {
+      target: 'http://127.0.0.1:7001',
       changeOrigin: true,
       // pathRewrite: { '^/igate': '' },
     },
