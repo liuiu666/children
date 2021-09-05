@@ -3,7 +3,7 @@ import { message } from 'antd';
 async function handleGetProductList() {
   const response = await window.sysAjax.get('/api/productManage/productManagement', {
     params: {
-      keyWord: null,
+      keyWord: this.state.keyWord,
       pageSize: 10,
       pageNum: this.state.currentPage,
     },

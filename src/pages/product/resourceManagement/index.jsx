@@ -170,7 +170,6 @@ export default class ResourceManagement extends React.Component {
       title: "编辑资源",
       dataItemId: record.id
     }, () => {
-      console.log(record)
       let resource = { js: [], css: [] };
       try {
         resource = JSON.parse(record.source)

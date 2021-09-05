@@ -1,7 +1,7 @@
 import React from 'react'
 import { Table, Space, Popconfirm, Tag } from 'antd'
 import { handleGetProductList, handleDeleteProductList, handleAddProductList } from './utils/ajaxAction'
-import { MinusCircleOutlined, CheckCircleOutlined} from '@ant-design/icons';
+import { MinusCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import RenderContent from '@/components/render-content'
 import RenderHeader from '@/components/render-header'
 import renderDrawer from './renderDrawer'
@@ -143,7 +143,11 @@ export default class Product extends React.Component {
           rightOption={{
             placeholder: '搜索产品名称',
             onSearch: (value) => {
-              console.log(value)
+              this.setState({
+                keyWord: value
+              }, () => {
+                this.handleGetProductList()
+              })
             }
           }}
         >
