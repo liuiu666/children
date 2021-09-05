@@ -1,6 +1,6 @@
 {
   "private": true,
-  "productCode": "children",
+  "productCode": "system",
   "scripts": {
     "dev": "umi dev",
     "dev-hmr": "cross-env HMR=none umi dev",
