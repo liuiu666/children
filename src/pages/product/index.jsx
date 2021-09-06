@@ -76,7 +76,7 @@ export default class Product extends React.Component {
         key: 'action',
         render: (text, record) => (
           <Space size="middle">
-            <a href={`#/system/product/resourceManagement?productCode=${record.productCode}`}>资源管理</a>
+            <a onClick={() => window.sysPush(`/product/resourceManagement?productCode=${record.productCode}`)} >资源管理</a>
             <a onClick={() => this.handleEditProduct(record)}>编辑</a>
             <Popconfirm
               title="您确定要删除吗?"
@@ -158,5 +158,6 @@ export default class Product extends React.Component {
     )
   }
 }
+
 
 

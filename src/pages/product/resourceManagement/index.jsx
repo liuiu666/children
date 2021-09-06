@@ -77,7 +77,7 @@ export default class ResourceManagement extends React.Component {
         }
       },
       {
-        title: '资源所属',
+        title: '创建人',
         dataIndex: 'owner',
         key: 'owner',
       },
@@ -156,7 +156,7 @@ export default class ResourceManagement extends React.Component {
       productCode,
       source: source,
       owner: "lin",
-      isDisabled: 1
+      //  isDisabled: 1
     }
     if (this.state.dataItemId) {
       request.id = this.state.dataItemId
@@ -185,7 +185,7 @@ export default class ResourceManagement extends React.Component {
   render() {
     return (
       <div className='resource-management'>
-        <RenderHeader title='资源管理' backUrl='#/system/product' />
+        <RenderHeader title='资源管理' backUrl='/product' />
         <RenderContent
           renderLeft={[{
             key: 1,
@@ -206,5 +206,6 @@ export default class ResourceManagement extends React.Component {
     )
   }
 }
+
 
 

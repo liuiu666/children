@@ -6,7 +6,7 @@ export default defineConfig({
   base: productCode,
   inlineLimit: 10000, // 小于10kb编译成base64
   history: {
-    type: 'hash',
+    type: 'browser',
   },
   hash: false,
   outputPath: './build',
