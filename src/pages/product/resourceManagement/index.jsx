@@ -1,9 +1,9 @@
 import React from 'react'
-import { Table, Space, Popconfirm, Tag } from 'antd'
 import { MinusCircleOutlined, CheckCircleOutlined, PauseCircleOutlined, PlayCircleOutlined } from '@ant-design/icons';
-import { handleGetDataList, handleDeleteProductList, handleAddDataList } from './utils/ajaxAction'
+import { handleGetDataList, handleDeleteDataItem, handleAddDataList } from './utils/ajaxAction'
 import RenderContent from '@/components/render-content'
 import RenderHeader from '@/components/render-header'
+import { Table, Space, Popconfirm, Tag } from 'antd'
 import renderDrawer from './renderDrawer'
 import './index.less'
 
@@ -21,7 +21,7 @@ export default class ResourceManagement extends React.Component {
       dataItemId: null
     }
     this.handleGetDataList = handleGetDataList.bind(this);
-    this.handleDeleteProductList = handleDeleteProductList.bind(this);
+    this.handleDeleteDataItem = handleDeleteDataItem.bind(this);
     this.handleAddDataList = handleAddDataList.bind(this);
 
     this.renderDrawer = renderDrawer.bind(this)
@@ -115,14 +115,14 @@ export default class ResourceManagement extends React.Component {
             <Space size="middle">
               <a onClick={() => this.handleAddDataList({
                 id: record.id,
-                isDisabled: !record.isDisabled
+                isDisabled: record.isDisabled ? 0 : 1
               })}>
                 <Tag {...option[record.isDisabled]} >{record.isDisabled === 0 ? '禁用' : '启用'}</Tag>
               </a>
               <a onClick={() => this.handleEditData(record)}>编辑</a>
               <Popconfirm
                 title="您确定要删除吗?"
-                onConfirm={() => this.handleDeleteProductList(record.id)}
+                onConfirm={() => this.handleDeleteDataItem(record.id)}
                 okText="是"
                 cancelText="否"
               >
@@ -142,7 +142,6 @@ export default class ResourceManagement extends React.Component {
           this.setState({ currentPage: page }, () => {
             this.handleGetDataList()
           })
-
         }
       }
     } />

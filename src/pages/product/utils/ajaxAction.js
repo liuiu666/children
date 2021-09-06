@@ -1,6 +1,6 @@
 import { message } from 'antd';
 
-async function handleGetProductList() {
+async function handleGetDataList() {
   const response = await window.sysAjax.get('/api/productManage/productManagement', {
     params: {
       keyWord: this.state.keyWord,
@@ -19,19 +19,19 @@ async function handleGetProductList() {
   });
 }
 
-async function handleAddProductList(request) {
+async function handleAddDataList(request) {
   const response = await window.sysAjax.post('/api/productManage/productManagement', request);
   if (response.code !== 200) {
     return;
   }
-  handleGetProductList.bind(this)();
+  handleGetDataList.bind(this)();
   message.success('保存成功');
   this.setState({
     visible: false,
   });
 }
 
-async function handleDeleteProductList(id) {
+async function handleDeleteDataItem(id) {
   const response = await window.sysAjax.delete(`/api/productManage/productManagement/${id}`);
   if (response.code !== 200) {
     return;
@@ -41,8 +41,8 @@ async function handleDeleteProductList(id) {
       currentPage: this.state.currentPage - 1,
     });
   }
-  handleGetProductList.bind(this)();
+  handleGetDataList.bind(this)();
   message.success('删除成功！');
 }
 
-export { handleGetProductList, handleDeleteProductList, handleAddProductList };
+export { handleGetDataList, handleDeleteDataItem, handleAddDataList };

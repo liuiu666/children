@@ -1,9 +1,9 @@
 import React from 'react'
-import { Table, Space, Popconfirm, Tag } from 'antd'
-import { handleGetProductList, handleDeleteProductList, handleAddProductList } from './utils/ajaxAction'
-import { MinusCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
+import { MinusCircleOutlined, CheckCircleOutlined, PauseCircleOutlined, PlayCircleOutlined } from '@ant-design/icons';
+import { handleGetDataList, handleDeleteDataItem, handleAddDataList } from './utils/ajaxAction'
 import RenderContent from '@/components/render-content'
 import RenderHeader from '@/components/render-header'
+import { Table, Space, Popconfirm, Tag } from 'antd'
 import renderDrawer from './renderDrawer'
 import './index.less'
 
@@ -20,15 +20,15 @@ export default class Product extends React.Component {
       title: '添加产品',
       dataItemId: null
     }
-    this.handleGetProductList = handleGetProductList.bind(this);
-    this.handleDeleteProductList = handleDeleteProductList.bind(this);
-    this.handleAddProductList = handleAddProductList.bind(this);
+    this.handleGetDataList = handleGetDataList.bind(this);
+    this.handleDeleteDataItem = handleDeleteDataItem.bind(this);
+    this.handleAddDataList = handleAddDataList.bind(this);
     this.renderDrawer = renderDrawer.bind(this)
   }
 
   componentDidMount() {
     // 获取产品列表
-    this.handleGetProductList()
+    this.handleGetDataList()
   }
 
 
@@ -74,20 +74,33 @@ export default class Product extends React.Component {
       {
         title: '操作',
         key: 'action',
-        render: (text, record) => (
-          <Space size="middle">
-            <a onClick={() => window.sysPush(`/product/resourceManagement?productCode=${record.productCode}`)} >资源管理</a>
-            <a onClick={() => this.handleEditProduct(record)}>编辑</a>
-            <Popconfirm
-              title="您确定要删除吗?"
-              onConfirm={() => this.handleDeleteProductList(record.id)}
-              okText="是"
-              cancelText="否"
-            >
-              <a>删除</a>
-            </Popconfirm>
-          </Space>
-        ),
+        render: (text, record) => {
+          const option = {
+            0: { icon: <PauseCircleOutlined />, color: "error" },
+            1: { icon: <PlayCircleOutlined />, color: "processing" },
+          }
+          return (
+            <Space size="middle">
+              <a onClick={() => this.handleAddDataList({
+                id: record.id,
+                productCode: record.productCode,
+                isDisabled: record.isDisabled ? 0 : 1
+              })}>
+                <Tag {...option[record.isDisabled]} >{record.isDisabled === 0 ? '禁用' : '启用'}</Tag>
+              </a>
+              <a onClick={() => window.sysPush(`/product/resourceManagement?productCode=${record.productCode}`)} >资源管理</a>
+              <a onClick={() => this.handleEditDataItem(record)}>编辑</a>
+              <Popconfirm
+                title="您确定要删除吗?"
+                onConfirm={() => this.handleDeleteDataItem(record.id)}
+                okText="是"
+                cancelText="否"
+              >
+                <a>删除</a>
+              </Popconfirm>
+            </Space>
+          )
+        },
       },
     ];
     return <Table rowKey='id' columns={columns} dataSource={this.state.dataSource} pagination={
@@ -97,7 +110,7 @@ export default class Product extends React.Component {
         defaultCurrent: this.state.currentPage,
         onChange: (page, pageSize) => {
           this.setState({ currentPage: page }, () => {
-            this.handleGetProductList()
+            this.handleGetDataList()
           })
         }
       }
@@ -109,10 +122,10 @@ export default class Product extends React.Component {
     if (this.state.dataItemId) {
       values.id = this.state.dataItemId
     }
-    this.handleAddProductList(values)
+    this.handleAddDataList(values)
   }
 
-  handleEditProduct(record) {
+  handleEditDataItem(record) {
     this.setState({
       visible: true,
       title: "编辑产品",
@@ -121,9 +134,6 @@ export default class Product extends React.Component {
       this.formRef.setFieldsValue(record)
     })
   }
-
-
-
   render() {
     return (
       <div className='product-page'>
@@ -146,7 +156,7 @@ export default class Product extends React.Component {
               this.setState({
                 keyWord: value
               }, () => {
-                this.handleGetProductList()
+                this.handleGetDataList()
               })
             }
           }}

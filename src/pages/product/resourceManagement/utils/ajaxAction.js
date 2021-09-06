@@ -32,7 +32,7 @@ async function handleAddDataList(request) {
   });
 }
 
-async function handleDeleteProductList(id) {
+async function handleDeleteDataItem(id) {
   const response = await window.sysAjax.delete(`/api/productJsCss/productJsCssList/${id}`);
   if (response.code !== 200) {
     return;
@@ -46,4 +46,4 @@ async function handleDeleteProductList(id) {
   message.success('删除成功！');
 }
 
-export { handleGetDataList, handleDeleteProductList, handleAddDataList };
+export { handleGetDataList, handleDeleteDataItem, handleAddDataList };
