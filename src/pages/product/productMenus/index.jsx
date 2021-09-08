@@ -4,10 +4,12 @@ import { handleGetDataList, handleDeleteDataItem, handleAddDataList } from './ut
 import RenderContent from '@/components/render-content'
 import RenderHeader from '@/components/render-header'
 import { Table, Space, Popconfirm, Tag } from 'antd'
-import renderDrawer from './renderDrawer'
+import renderAddMenus from './renderAddMenus'
+import RenderTable from './renderTable'
 import './index.less'
 
-export default class Product extends React.Component {
+
+export default class ResourceManagement extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -15,15 +17,15 @@ export default class Product extends React.Component {
       totalPage: 1,
       count: 0,
       currentPage: 1,
-      keyWord: null,
       visible: false,
-      title: '添加产品',
+      title: '添加资源',
       dataItemId: null
     }
     this.handleGetDataList = handleGetDataList.bind(this);
     this.handleDeleteDataItem = handleDeleteDataItem.bind(this);
     this.handleAddDataList = handleAddDataList.bind(this);
-    this.renderDrawer = renderDrawer.bind(this)
+
+    this.renderAddMenus = renderAddMenus.bind(this)
   }
 
   componentDidMount() {
@@ -35,19 +37,50 @@ export default class Product extends React.Component {
   renderTable() {
     const columns = [
       {
-        title: '产品名称',
-        dataIndex: 'productName',
-        key: 'productName',
-      },
-      {
         title: '产品编码',
         dataIndex: 'productCode',
         key: 'productCode',
       },
       {
-        title: '描述',
-        dataIndex: 'description',
-        key: 'description',
+        title: 'JS地址',
+        dataIndex: 'source',
+        key: 'sourceJs',
+        render: (text, record) => {
+          let resource = { js: [], css: [] };
+          try {
+            resource = JSON.parse(text)
+          } catch (error) {
+            console.error(error)
+          }
+          const option = {
+            0: { icon: <CheckCircleOutlined />, color: "success" },
+            1: { icon: <MinusCircleOutlined />, color: "default" },
+          }
+          return <div className='table-js-css'>{resource.css.map((item, index) => <Tag key={index} {...option[record.isDisabled]}>{item}</Tag>)}</div>
+        }
+      },
+      {
+        title: 'CSS地址',
+        dataIndex: 'source',
+        key: 'sourceCss',
+        render: (text, record) => {
+          let resource = { js: [], css: [] };
+          try {
+            resource = JSON.parse(text)
+          } catch (error) {
+            console.error(error)
+          }
+          const option = {
+            0: { icon: <CheckCircleOutlined />, color: "success" },
+            1: { icon: <MinusCircleOutlined />, color: "default" },
+          }
+          return <div className='table-js-css'>{resource.css.map((item, index) => <Tag key={index} {...option[record.isDisabled]}>{item}</Tag>)}</div>
+        }
+      },
+      {
+        title: '创建人',
+        dataIndex: 'owner',
+        key: 'owner',
       },
       {
         title: '是否禁用',
@@ -83,14 +116,11 @@ export default class Product extends React.Component {
             <Space size="middle">
               <a onClick={() => this.handleAddDataList({
                 id: record.id,
-                productCode: record.productCode,
                 isDisabled: record.isDisabled ? 0 : 1
               })}>
                 <Tag {...option[record.isDisabled]} >{record.isDisabled === 0 ? '禁用' : '启用'}</Tag>
               </a>
-              <a onClick={() => window.sysPush(`/product/resourceManagement?productCode=${record.productCode}`)} >资源管理</a>
-              <a onClick={() => window.sysPush(`/product/productMenus?productCode=${record.productCode}`)} >菜单管理</a>
-              <a onClick={() => this.handleEditDataItem(record)}>编辑</a>
+              <a onClick={() => this.handleEditData(record)}>编辑</a>
               <Popconfirm
                 title="您确定要删除吗?"
                 onConfirm={() => this.handleDeleteDataItem(record.id)}
@@ -101,7 +131,7 @@ export default class Product extends React.Component {
               </Popconfirm>
             </Space>
           )
-        },
+        }
       },
     ];
     return <Table rowKey='id' columns={columns} dataSource={this.state.dataSource} pagination={
@@ -119,53 +149,47 @@ export default class Product extends React.Component {
   }
 
   async handleGetFormData() {
-    let values = await this.formRef.validateFields()
-    if (this.state.dataItemId) {
-      values.id = this.state.dataItemId
+    const values = await this.formRef.validateFields()
+    const source = JSON.stringify(values)
+    const { productCode } = this.props.location.query
+    let request = {
+      productCode,
+      source: source,
+      owner: "lin",
+      //  isDisabled: 1
     }
-    this.handleAddDataList(values)
+    if (this.state.dataItemId) {
+      request.id = this.state.dataItemId
+    }
+    this.handleAddDataList(request)
   }
 
-  handleEditDataItem(record) {
+  handleEditData(record) {
     this.setState({
       visible: true,
-      title: "编辑产品",
+      title: "编辑资源",
       dataItemId: record.id
     }, () => {
-      this.formRef.setFieldsValue(record)
+      let resource = { js: [], css: [] };
+      try {
+        resource = JSON.parse(record.source)
+      } catch (error) {
+        console.error(error)
+      }
+      this.formRef.setFieldsValue(resource)
     })
   }
+
+
+
   render() {
     return (
-      <div className='product-page'>
-        <RenderHeader title='产品管理' />
-        <RenderContent
-          renderLeft={[{
-            key: 1,
-            title: '新增产品',
-            onClick: () => {
-              this.formRef?.resetFields()
-              this.setState({
-                dataItemId: null,
-                visible: true,
-                title: '添加产品',
-              })
-            }
-          }]}
-          rightOption={{
-            placeholder: '搜索产品名称',
-            onSearch: (value) => {
-              this.setState({
-                keyWord: value
-              }, () => {
-                this.handleGetDataList()
-              })
-            }
-          }}
-        >
-          {this.renderTable()}
-        </RenderContent>
-        {this.renderDrawer()}
+      <div className='product-menus'>
+        <RenderHeader title='菜单管理' backUrl='/product' />
+        <main className='content'>
+          <RenderTable />
+          {this.renderAddMenus()}
+        </main>
       </div >
     )
   }
