@@ -146,7 +146,8 @@ export default class Product extends React.Component {
               this.formRef?.resetFields()
               this.setState({
                 dataItemId: null,
-                visible: true
+                visible: true,
+                title: '添加产品',
               })
             }
           }]}

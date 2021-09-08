@@ -56,7 +56,7 @@ export default function renderDrawer() {
               label="产品编码"
               rules={[{ required: true, message: '请输入' }]}
             >
-              <Input placeholder="请输入" />
+              <Input placeholder="请输入" disabled={title === '编辑产品'} />
             </Form.Item>
           </Col>
         </Row>
